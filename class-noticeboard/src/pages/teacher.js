@@ -19,18 +19,28 @@ const Teacher = () => {
       return;
     }
 
-    // Add notice to the API
-    fetch("/api/notices", {
+    // Send the POST request to add a new notice
+    fetch("/api/addNotice", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...newNotice, teacherId }), // Attach teacherId with the notice
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        title: newNotice.title,
+        content: newNotice.content,
+        date: new Date().toISOString(), // Date can be the current date or a specific one
+        teacherId: 1, // Make sure you send the logged-in teacher ID
+      }),
     })
       .then((res) => res.json())
       .then((data) => {
-        setNotices((prevNotices) => [...prevNotices, data]); // Add new notice to the list
-        setNewNotice({ title: "", content: "" }); // Reset form
+        console.log("Notice added successfully:", data);
+        setNotices((prevNotices) => [...prevNotices, data]);
+        setNewNotice({ title: "", content: "" }); // Reset form fields
       })
-      .catch((error) => console.log("Error posting notice:", error));
+      .catch((error) => {
+        console.error("Error posting notice:", error);
+      });
   };
 
   const deleteNotice = (id) => {

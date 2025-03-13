@@ -12,6 +12,9 @@ const Admin = () => {
       fetch("/api/notices").then((res) => res.json()),
     ])
       .then(([userData, noticeData]) => {
+        console.log("Fetched Users:", userData);
+        console.log("Fetched Notices:", noticeData);
+
         setUsers(userData);
         setNotices(noticeData);
         setLoading(false); // Set loading to false once data is fetched
@@ -31,8 +34,8 @@ const Admin = () => {
       // API call to delete a notice
       fetch(`/api/notices/${id}`, { method: "DELETE" })
         .then(() => {
-          setNotices((prevNotices) =>
-            prevNotices.filter((notice) => notice.id !== id)
+          setNotices(
+            (prevNotices) => prevNotices.filter((notice) => notice._id !== id) // Changed id to _id for MongoDB's default field
           );
         })
         .catch((error) => console.error("Error deleting notice:", error));
@@ -48,7 +51,7 @@ const Admin = () => {
       // API call to delete a user (this functionality needs to be implemented on the backend)
       fetch(`/api/users/${id}`, { method: "DELETE" })
         .then(() => {
-          setUsers((prevUsers) => prevUsers.filter((user) => user.id !== id));
+          setUsers((prevUsers) => prevUsers.filter((user) => user._id !== id)); // Changed id to _id for MongoDB's default field
         })
         .catch((error) => console.error("Error deleting user:", error));
     }
@@ -65,10 +68,12 @@ const Admin = () => {
         <h3>Users</h3>
         <ul>
           {users.map((user) => (
-            <li key={user.id}>
+            <li key={user._id}>
+              {" "}
+              {/* Changed to _id for MongoDB's default field */}
               {user.username} - {user.role}
               <button
-                onClick={() => deleteUser(user.id)}
+                onClick={() => deleteUser(user._id)} // Changed to _id for MongoDB's default field
                 style={{ marginLeft: "10px" }}
               >
                 Delete User
@@ -81,7 +86,7 @@ const Admin = () => {
         <h3>Notices</h3>
         {notices.map((notice) => (
           <div
-            key={notice.id}
+            key={notice._id} // Changed to _id for MongoDB's default field
             style={{
               marginBottom: "20px",
               padding: "10px",
@@ -93,7 +98,9 @@ const Admin = () => {
             <p>
               <small>{new Date(notice.date).toLocaleDateString()}</small>
             </p>
-            <button onClick={() => deleteNotice(notice.id)}>
+            <button onClick={() => deleteNotice(notice._id)}>
+              {" "}
+              {/* Changed to _id for MongoDB's default field */}
               Delete Notice
             </button>
           </div>
