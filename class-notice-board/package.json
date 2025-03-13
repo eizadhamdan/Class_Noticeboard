@@ -11,5 +11,8 @@
   "workspaces": [
     "frontend",
     "backend"
-  ]
+  ],
+  "dependencies": {
+    "framer-motion": "^12.5.0"
+  }
 }

@@ -1,0 +1,79 @@
+body {
+  font-family: "Poppins", sans-serif;
+  background-color: #2a2a2a; /* Slightly grayish background */
+  color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.login-container {
+  background-color: #313131; /* Slightly lighter for contrast */
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4); /* Softer shadow */
+  text-align: center;
+  width: 100%;
+  max-width: 400px;
+}
+
+h2 {
+  margin-bottom: 1.5rem;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 12px;
+  border: none;
+  border-radius: 8px;
+  background: #3f3f3f;
+  color: #ffffff;
+  font-size: 16px;
+  transition: box-shadow 0.3s ease-in-out, transform 0.2s ease-in-out;
+}
+
+input:focus {
+  outline: none;
+  border: 2px solid #6a11cb;
+  box-shadow: 0 0 12px rgba(106, 17, 203, 0.6);
+  transform: scale(1.02);
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(135deg, #6a11cb, #2575fc);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out, transform 0.2s ease-in-out;
+}
+
+button:hover {
+  background: linear-gradient(135deg, #4a0f9e, #1b5dff);
+  transform: scale(1.05);
+}
+
+.error {
+  color: #ff4d4d;
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+@media (max-width: 480px) {
+  .login-container {
+    width: 90%;
+    padding: 1.5rem;
+  }
+  input,
+  button {
+    font-size: 14px;
+  }
+}

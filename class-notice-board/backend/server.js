@@ -20,6 +20,10 @@ mongoose
   .then(() => console.log("MongoDB connected"))
   .catch((err) => console.log("MongoDB connection error:", err));
 
+// Import Notice Routes
+const noticeRoutes = require("./routes/noticeRoutes");
+app.use("/api/notices", noticeRoutes);
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });

@@ -1,17 +1,17 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import "../styles/NoticeForm.css";
+import "../styles/Login.css";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
 
   const handleLogin = (e) => {
     e.preventDefault();
-    const credentials = { email, password };
+    const credentials = { username, password }; // Use username instead of email
 
     axios
       .post("http://localhost:5000/api/auth/login", credentials)
@@ -19,7 +19,7 @@ const Login = () => {
         localStorage.setItem("token", response.data.token);
         navigate("/");
       })
-      .catch((error) => {
+      .catch(() => {
         setErrorMessage("Invalid credentials");
       });
   };
@@ -30,10 +30,10 @@ const Login = () => {
       {errorMessage && <p className="error">{errorMessage}</p>}
       <form onSubmit={handleLogin}>
         <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          type="text"
+          placeholder="Username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)} // Updated to setUsername
           required
         />
         <input
