@@ -1,8 +1,9 @@
 import clientPromise from "../../../lib/mongodb";
+import { ObjectId } from "mongodb"; // Import ObjectId for use in delete operation
 
 export default async function handler(req, res) {
   const client = await clientPromise;
-  const db = client.db(); // Use your database name if needed
+  const db = client.db("school_notice_board"); // Specify the database name
   const noticesCollection = db.collection("notices");
 
   switch (req.method) {
@@ -11,7 +12,7 @@ export default async function handler(req, res) {
       try {
         const notices = await noticesCollection
           .find({})
-          .sort({ date: -1 })
+          .sort({ date: -1 }) // Sorting by date, latest first
           .toArray();
         res.status(200).json(notices);
       } catch (error) {
@@ -32,11 +33,12 @@ export default async function handler(req, res) {
 
     case "DELETE":
       // Delete old notices (admin only)
-      const noticeId = req.body.id;
+      const { id } = req.body; // Notice ID is expected in the body
       try {
         const result = await noticesCollection.deleteOne({
-          _id: new ObjectId(noticeId),
+          _id: new ObjectId(id), // Convert string ID to ObjectId for deletion
         });
+
         if (result.deletedCount === 1) {
           res.status(200).json({ message: "Notice deleted successfully" });
         } else {
