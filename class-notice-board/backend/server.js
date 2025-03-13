@@ -22,10 +22,10 @@ mongoose
 
 // Import Routes
 const noticeRoutes = require("./routes/noticeRoutes");
-const userRoutes = require("./routes/userRoutes");
+const userRoutes = require("./routes/userRoutes"); // Ensure this import is correct
 
 app.use("/api/notices", noticeRoutes);
-app.use("/api/users", userRoutes); // Add user management routes
+app.use("/api/users", userRoutes); // Ensure this is properly set
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

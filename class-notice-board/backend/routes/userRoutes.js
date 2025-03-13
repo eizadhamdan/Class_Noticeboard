@@ -1,7 +1,39 @@
 const express = require("express");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const User = require("../models/User"); // Import User model
 const Notice = require("../models/Notice");
 const auth = require("../middleware/auth");
 const router = express.Router();
+require("dotenv").config();
+
+// Login route for users (admin, teacher, student)
+router.post("/login", async (req, res) => {
+  const { username, password } = req.body;
+
+  try {
+    // Check if the username exists in the database
+    const user = await User.findOne({ username });
+    if (!user) return res.status(400).json({ message: "User not found" });
+
+    // Compare password as plain text (no hashing)
+    if (user.password !== password) {
+      return res.status(400).json({ message: "Invalid credentials" });
+    }
+
+    // Create JWT token
+    const token = jwt.sign(
+      { id: user._id, role: user.role },
+      process.env.JWT_SECRET,
+      { expiresIn: "1h" }
+    );
+
+    res.json({ token, role: user.role });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
 
 // POST route to add a notice (Teachers only)
 router.post("/postNotice", auth, async (req, res) => {
@@ -53,6 +85,7 @@ router.post("/register", auth, async (req, res) => {
   if (existingUser)
     return res.status(400).json({ error: "User already exists" });
 
+  // Hash password before saving
   const hashedPassword = await bcrypt.hash(password, 10);
   const newUser = new User({ username, password: hashedPassword, role });
   await newUser.save();

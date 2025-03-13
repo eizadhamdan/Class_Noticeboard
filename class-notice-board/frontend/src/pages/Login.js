@@ -11,13 +11,13 @@ const Login = () => {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    const credentials = { username, password }; // Use username instead of email
+    const credentials = { username, password }; // Ensure correct credentials format
 
     axios
-      .post("http://localhost:5000/api/auth/login", credentials)
+      .post("http://localhost:5000/api/users/login", credentials)
       .then((response) => {
-        localStorage.setItem("token", response.data.token);
-        navigate("/");
+        localStorage.setItem("token", response.data.token); // Store JWT token
+        navigate("/"); // Redirect after successful login
       })
       .catch(() => {
         setErrorMessage("Invalid credentials");
@@ -33,7 +33,7 @@ const Login = () => {
           type="text"
           placeholder="Username"
           value={username}
-          onChange={(e) => setUsername(e.target.value)} // Updated to setUsername
+          onChange={(e) => setUsername(e.target.value)}
           required
         />
         <input
