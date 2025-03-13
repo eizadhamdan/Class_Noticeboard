@@ -1,0 +1,71 @@
+/* General Navbar Styles */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px;
+  background-color: #121212; /* Dark mode background */
+  color: #eaeaea; /* Off-white text */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  max-width: 100vw;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.8); /* Dark shadow */
+  z-index: 1000;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+/* Brand Styling */
+.navbar-brand h1 {
+  font-size: 24px;
+  margin: 0;
+  font-weight: bold;
+  white-space: nowrap; /* Prevents text from wrapping */
+  color: #eaeaea; /* Off-white for better contrast */
+}
+
+/* Navigation Links */
+.navbar-links {
+  display: flex;
+  gap: 15px; /* Space between links */
+  flex-wrap: wrap; /* Allows wrapping on smaller screens */
+}
+
+.navbar-links a {
+  color: #eaeaea; /* Off-white for better contrast */
+  text-decoration: none;
+  font-size: 18px;
+  transition: color 0.3s ease-in-out;
+  white-space: nowrap; /* Prevents wrapping */
+}
+
+.navbar-links a:hover {
+  color: #52ff3f; /* Neon Green hover effect */
+}
+
+.navbar-links a.active {
+  color: #f39c12; /* Warm Orange for active link */
+}
+
+/* Responsive Design for Mobile */
+@media screen and (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 20px;
+    text-align: center;
+  }
+
+  .navbar-links {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+  }
+
+  .navbar-brand h1 {
+    font-size: 20px;
+  }
+}
