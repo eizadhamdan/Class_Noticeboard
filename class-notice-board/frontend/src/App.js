@@ -5,17 +5,33 @@ import Login from "./pages/Login";
 import AdminDashboard from "./pages/AdminDashboard";
 import PostNotice from "./pages/PostNotice";
 import Navbar from "./components/Navbar";
+import ProtectedRoute from "./components/ProtectedRoute"; // Import ProtectedRoute
 
 function App() {
   return (
     <div className="App">
-      {/* <h1>Notice Board App</h1> */}
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/admin" element={<AdminDashboard />} />
-        <Route path="/post-notice" element={<PostNotice />} />
+
+        {/* Protected Routes */}
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute requiredRole="admin">
+              <AdminDashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/post-notice"
+          element={
+            <ProtectedRoute requiredRole="teacher">
+              <PostNotice />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </div>
   );

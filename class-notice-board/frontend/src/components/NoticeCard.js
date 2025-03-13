@@ -12,7 +12,9 @@ const NoticeCard = ({ notice }) => {
       <h3>{notice.title}</h3>
       <p>{notice.content}</p>
       <div className="footer">
-        <small>{new Date(notice.createdAt).toLocaleDateString()}</small>
+        <small>{new Date(notice.createdAt).toLocaleDateString()}</small>{" "}
+        <small>By {notice.teacherId}</small>{" "}
+        {/* Optional: Display notice author */}
       </div>
     </motion.div>
   );
