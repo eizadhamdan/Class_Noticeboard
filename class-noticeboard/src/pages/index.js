@@ -1,33 +1,69 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import { useRouter } from "next/router";
 
 const Home = () => {
-  const [notices, setNotices] = useState([]);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const router = useRouter();
 
-  useEffect(() => {
-    // Fetch notices from the API
-    fetch("/api/notices")
-      .then((res) => res.json())
-      .then((data) => setNotices(data))
-      .catch((error) => console.log(error));
-  }, []);
+  const handleLogin = async () => {
+    // Basic validation
+    if (!username || !password) {
+      setError("Please enter both username and password");
+      return;
+    }
+
+    // Mock login validation
+    const user = await mockLogin(username, password);
+
+    if (user) {
+      // Redirect based on user role
+      if (user.role === "student") {
+        router.push("/student");
+      } else if (user.role === "teacher") {
+        router.push("/teacher");
+      } else if (user.role === "admin") {
+        router.push("/admin");
+      }
+    } else {
+      setError("Invalid username or password");
+    }
+  };
+
+  // Mock login function (replace with actual authentication later)
+  const mockLogin = (username, password) => {
+    // Replace with real authentication logic using your MongoDB users collection
+    const users = [
+      { username: "student1", password: "password123", role: "student" },
+      { username: "teacher1", password: "password123", role: "teacher" },
+      { username: "admin1", password: "password123", role: "admin" },
+    ];
+
+    return users.find(
+      (user) => user.username === username && user.password === password
+    );
+  };
 
   return (
     <div className="container">
       <h1>Class Notice Board</h1>
-      <div className="notice-list">
-        {notices.length === 0 ? (
-          <p>No notices available.</p>
-        ) : (
-          notices.map((notice) => (
-            <div key={notice.id} className="notice">
-              <h3>{notice.title}</h3>
-              <p>{notice.content}</p>
-              <p>
-                <small>{new Date(notice.date).toLocaleDateString()}</small>
-              </p>
-            </div>
-          ))
-        )}
+      <div>
+        <h2>Login</h2>
+        <input
+          type="text"
+          placeholder="Username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        {error && <p style={{ color: "red" }}>{error}</p>}
+        <button onClick={handleLogin}>Login</button>
       </div>
     </div>
   );
