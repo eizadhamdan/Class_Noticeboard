@@ -1,28 +1,49 @@
-import { notices } from "../../../data/notices"; // This is a mock data file you can create for the sake of this example.
+import clientPromise from "../../../lib/mongodb";
 
-export default function handler(req, res) {
+export default async function handler(req, res) {
+  const client = await clientPromise;
+  const db = client.db(); // Use your database name if needed
+  const noticesCollection = db.collection("notices");
+
   switch (req.method) {
     case "GET":
       // Fetch all notices
-      res.status(200).json(notices);
+      try {
+        const notices = await noticesCollection
+          .find({})
+          .sort({ date: -1 })
+          .toArray();
+        res.status(200).json(notices);
+      } catch (error) {
+        res.status(500).json({ message: "Error fetching notices", error });
+      }
       break;
 
     case "POST":
       // Post a new notice
       const newNotice = req.body;
-      newNotice.id = notices.length + 1; // Generate an ID for the notice
-      notices.push(newNotice);
-      res.status(201).json(newNotice);
+      try {
+        const result = await noticesCollection.insertOne(newNotice);
+        res.status(201).json(result.ops[0]); // Send back the created notice
+      } catch (error) {
+        res.status(500).json({ message: "Error posting notice", error });
+      }
       break;
 
     case "DELETE":
       // Delete old notices (admin only)
       const noticeId = req.body.id;
-      const updatedNotices = notices.filter((notice) => notice.id !== noticeId);
-      if (updatedNotices.length !== notices.length) {
-        res.status(200).json({ message: "Notice deleted successfully" });
-      } else {
-        res.status(404).json({ message: "Notice not found" });
+      try {
+        const result = await noticesCollection.deleteOne({
+          _id: new ObjectId(noticeId),
+        });
+        if (result.deletedCount === 1) {
+          res.status(200).json({ message: "Notice deleted successfully" });
+        } else {
+          res.status(404).json({ message: "Notice not found" });
+        }
+      } catch (error) {
+        res.status(500).json({ message: "Error deleting notice", error });
       }
       break;
 
