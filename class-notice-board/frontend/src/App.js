@@ -5,7 +5,9 @@ import Login from "./pages/Login";
 import AdminDashboard from "./pages/AdminDashboard";
 import PostNotice from "./pages/PostNotice";
 import Navbar from "./components/Navbar";
-import ProtectedRoute from "./components/ProtectedRoute"; // Import ProtectedRoute
+import ProtectedRoute from "./components/ProtectedRoute";
+import { ToastContainer } from "react-toastify"; // Import ToastContainer
+import "react-toastify/dist/ReactToastify.css"; // Import Toastify styles
 
 function App() {
   return (
@@ -14,8 +16,6 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
-
-        {/* Protected Routes */}
         <Route
           path="/admin"
           element={
@@ -33,6 +33,9 @@ function App() {
           }
         />
       </Routes>
+
+      {/* Add ToastContainer here */}
+      <ToastContainer />
     </div>
   );
 }

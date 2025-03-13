@@ -1,27 +1,27 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import "../styles/Login.css";
+import { useAuth } from "../context/AuthContext"; // Import useAuth to use the login function
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
+  const { login } = useAuth(); // Get login function from AuthContext
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    const credentials = { username, password }; // Ensure correct credentials format
+    const credentials = { username, password };
 
-    axios
-      .post("http://localhost:5000/api/users/login", credentials)
-      .then((response) => {
-        localStorage.setItem("token", response.data.token); // Store JWT token
-        navigate("/"); // Redirect after successful login
-      })
-      .catch(() => {
-        setErrorMessage("Invalid credentials");
-      });
+    const isLoggedIn = await login(username, password);
+
+    if (!isLoggedIn) {
+      setErrorMessage("Invalid credentials");
+      toast.error("Login Failed!");
+    }
   };
 
   return (

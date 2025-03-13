@@ -11,7 +11,7 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
     if (storedUser) {
-      setUser(storedUser);
+      setUser(storedUser); // If the user is already stored in localStorage, load them
     }
   }, []);
 
@@ -26,7 +26,15 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem("user", JSON.stringify(res.data));
       setUser(res.data);
 
-      navigate("/"); // Redirect to home after login
+      // Navigate based on user role
+      if (res.data.role === "student") {
+        navigate("/"); // Route to home page for students
+      } else if (res.data.role === "teacher") {
+        navigate("/post-notice"); // Route to post notice page for teachers
+      } else if (res.data.role === "admin") {
+        navigate("/admin"); // Route to admin dashboard for admins
+      }
+
       return true;
     } catch (error) {
       console.error("Login failed:", error);
@@ -47,4 +55,4 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
-export const useAuth = () => useContext(AuthContext); // Custom hook to use AuthContext
+export const useAuth = () => useContext(AuthContext);
